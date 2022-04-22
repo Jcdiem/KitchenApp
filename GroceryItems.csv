@@ -1,0 +1,203 @@
+4,brownie mix,box,0,baking,1
+5,cake mix yellow,box,0,baking,1
+6,cake mix choc,box,0,baking,1
+7,pumpkin puree,28 oz can,0,baking,3
+8,pie filling  apple,16 oz can,0,baking,1
+9,pie filling cherry,16 oz can,0,baking,1
+10,pie filling blueberry,16 oz can,0,baking,1
+11,sugar - brown - reg,2# bag,0,baking,1
+12,sugar - brown - erythritol,2# bag,0,baking,1
+13,sugar - white - reg,5# bag,0,baking,2
+14,sugar - white - erythitol,3# bag,0,baking,2
+15,sugar - white - Stevia,3# bag,0,baking,0
+16,sugar - white - Stevia liquid,oz,0,baking,0
+17,sugar - allulose,2# bag,2,baking,1
+18,sugar confectioner,2# bag,1,baking,1
+19,sugar confect - erythritol,2# bag,2,baking,1
+20,flour - white,5# bag,20,baking,5
+21,flour - bread,5# bag,5,baking,2
+22,flour - wheat,5# bag,5,baking,2
+23,flour - wheat - white ground,5# bag,5,baking,2
+24,flour - coconut,3# bag,20,baking,2
+25,flour - almond,3# bag,30,baking,2
+26,flour -rice,5# bag,10,baking,2
+27,flour -semolina,2# bag,0,baking,0
+28,raisins,2# box,0,baking,0
+29,choc chips - reg,12oz bag,0,baking,0
+30,choc chips - dark,12oz bag,0,baking,0
+31,choc - dark bars,4oz bar,0,baking,0
+32,cacoa - 100%,filler,0,baking,0
+33,cocoa powder - unsweetened,filler,0,baking,0
+34,cacoa powder dark,filler,0,baking,0
+35,baking soda,filler,0,baking,0
+36,baking powder,filler,0,baking,0
+37,salt iodized,filler,0,baking,0
+38,psylium powder,filler,0,baking,0
+39,arrowroot powder,filler,0,baking,0
+40,eggs,dozen,0,baking,0.5
+41,butter -quarter - salted,8 qtrs,0,baking,0
+42,butter- quarter - unsalted,8 qtrs,0,baking,0
+43,yeast - rapid rise,filler,0,baking,0
+44,yeast - dry active,filler,0,baking,0
+45,flour - lupin,filler,0,baking,0
+46,flour - keto ,filler,0,baking,0
+47,Mio Cherry Blackberry,filler,0,beverage,0
+48,Mio Grape,filler,0,beverage,0
+49,Mio Green Thunder,filler,0,beverage,0
+50,Mio Acai Berry,filler,0,beverage,0
+51,Mio Orange,filler,0,beverage,0
+52,Mio Blue Sport,filler,0,beverage,0
+53,Mio Berry Pomegranite,filler,0,beverage,0
+54,Mio Jim2,filler,0,beverage,0
+55,Mio Jim3,filler,0,beverage,0
+56,taco hard shells,filler,0,breads,0
+57,bread white,filler,0,breads,0
+58,bread sourdough,filler,0,breads,0
+59,buns hot dog,filler,0,breads,0
+60,buns hamburg,filler,0,breads,0
+61,Jif peanut butter,filler,0,condiment,0
+62,Almond butter,filler,0,condiment,0
+63,Cashew butter,filler,0,condiment,0
+64,Natural Peanut butter,filler,0,condiment,0
+65,honey,filler,0,condiment,0
+66,mustard yellow,filler,0,condiment,0
+67,mustard brown,filler,0,condiment,0
+68,mustard spicy,filler,0,condiment,0
+69,Ketchup hunts,filler,0,condiment,0
+70,hot sauce,filler,0,condiment,0
+71,Miracle Whip,filler,0,condiment,0
+72,Mayonnaise,filler,0,condiment,0
+73,choc syrup,filler,0,condiment,0
+74,straw syrup,filler,0,condiment,0
+75,hot fudge,filler,0,condiment,0
+76,caramel syrup,filler,0,condiment,0
+77,butterscotch syrup,filler,0,condiment,0
+78,syrup  - maple - pure,filler,0,condiment,0
+79,syrup - maple - reg,filler,0,condiment,0
+80,syrup - maple - sugar free,filler,0,condiment,0
+81,cherries - marascino,filler,0,cookies,0
+82,rice medley,filler,0,cooking,0
+83,rice chicken ,filler,0,cooking,0
+84,rice spanish,filler,0,cooking,0
+85,rice mexican,filler,0,cooking,0
+86,rice white,filler,0,cooking,0
+87,rice jasmine,filler,0,cooking,0
+88, rice long,filler,0,cooking,0
+89,egg noodles wide,filler,0,cooking,0
+90,shell noodles,filler,0,cooking,0
+91,spaghetti noodles,filler,0,cooking,0
+92,lasagna noodles,filler,0,cooking,0
+93,jack fruit,filler,0,cooking,0
+94,tomatoe sauce,filler,0,cooking,0
+95,tomatoe paste,filler,0,cooking,0
+96,tomatoe puree,filler,0,cooking,0
+97,beef stock,filler,0,cooking,0
+98,chicken stock,filler,0,cooking,0
+99,vegetable stock,filler,0,cooking,0
+100,pearl barley ,filler,0,cooking,0
+101,lemon juice,filler,0,cooking,0
+102,lime juice,filler,0,cooking,0
+103,vinegar - apple cider,filler,0,cooking,0
+104,vinegar - white,filler,0,cooking,0
+105,avacdo oil,filler,0,cooking,0
+106,cheese stick - moz,filler,0,dairy,0
+107,cheese stick - ched,filler,0,dairy,0
+108,cheese - shred - ched,filler,0,dairy,0
+109,cheese - shred - moz,filler,0,dairy,0
+110,cheese - slice - ched,filler,0,dairy,0
+111,cheese - slice - american,filler,0,dairy,0
+112,cheese - slice - provolone,filler,0,dairy,0
+113,cheese - slice - pepperjack,filler,0,dairy,0
+114,cottage cheese,filler,0,dairy,0
+115,sour cream,filler,0,dairy,0
+116,cream cheese,filler,0,dairy,0
+117,ricotta cheese,filler,0,dairy,0
+118,parmesan cheese,filler,0,dairy,0
+119,apple,filler,0,fruit,0
+120,tuna,filler,0,meat,0
+121,beef - ground,filler,0,meat,0
+122,beef - stew,filler,0,meat,0
+123,beef - roast - pot,filler,0,meat,0
+124,beef - roast - chuck,filler,0,meat,0
+125,beef - roast - sirloin tip,filler,0,meat,0
+126,beef - roast - top round,filler,0,meat,0
+127,pork - roast - butt,filler,0,meat,0
+128,pork - roast - loin,filler,0,meat,0
+129,sausage links,filler,0,meat,0
+130,bacon - sliced - reg,filler,0,meat,0
+131,beef - steak - porterhouse,filler,0,meat,0
+132,beef stick ,filler,0,meat,0
+133,lunch meat - chicken,filler,0,meat,0
+134,lunch meat - turkey,filler,0,meat,0
+135,lunch meat - ham,filler,0,meat,0
+136,mac & cheese,filler,0,pre-made,0
+137,pizza sauce,filler,0,sauce,0
+138,gravy beef,filler,0,sauce,0
+139,gravy pork,filler,0,sauce,0
+140,spaghetti sauce,filler,0,sauce,0
+141,chips tostito,filler,0,snack,0
+142,chips scoops,filler,0,snack,0
+143,chips bbq,filler,0,snack,0
+144,chips Dorito,filler,0,snack,0
+145,chips Dorit ranch,filler,0,snack,0
+146,twizzlers,filler,0,snack,0
+147,lil deb swiss roll,filler,0,snack,0
+148,lil deb nutty buddy,filler,0,snack,0
+149,cheez-its,filler,0,snack,0
+150,goldfish,filler,0,snack,0
+151,Geeko bar salty ,filler,0,snack,0
+152,Geeko bar soft,filler,0,snack,0
+153,geeko bar crunchy,filler,0,snack,0
+154,pringles,filler,0,snack,0
+155,harvest Chips cheddar,filler,0,snack,0
+156,harvest chips salsa,filler,0,snack,0
+157,lil deb fudge rounds,filler,0,snack,0
+158,marshmallows - large,filler,0,snack,0
+159,marshmallows - mini,filler,0,snack,0
+160,choc - Hershey's bars,filler,0,snack,0
+161,cream chicken soup,filler,0,soup,0
+162,tomatoe soup,filler,0,soup,0
+163,creamy chunky chicken,filler,0,soup,0
+164,chicken soup homestyle,filler,0,soup,0
+165,cavenders,filler,0,spice,0
+166,nutmeg,filler,0,spice,0
+167,sea salt fine,filler,0,spice,0
+168,sea salt coarse,filler,0,spice,0
+169,salt iodized,filler,0,spice,0
+170,pepper black ground,filler,0,spice,0
+171,cream of tarter,filler,0,spice,0
+172,poultry seasoning,filler,0,spice,0
+173,ginger,filler,0,spice,0
+174,dill weed,filler,0,spice,0
+175,italian seasoning,filler,0,spice,0
+176,garlic powder,filler,0,spice,0
+177,garlic salt,filler,0,spice,0
+178,onions dried crushed,filler,0,spice,0
+179,onion powder,filler,0,spice,0
+180,onion soup mix packet,filler,0,spice,0
+181,enchilada mix packet,filler,0,spice,0
+182,taco mix packet,filler,0,spice,0
+183, beef stew mix ,filler,0,spice,0
+184,cinnamon sticks,filler,0,spice,0
+185,cinnamon ground,filler,0,spice,0
+186,cinnamon & sugar,filler,0,spice,0
+187,basil,filler,0,spice,0
+188,oregano,filler,0,spice,0
+189,rosemary,filler,0,spice,0
+190,thyme,filler,0,spice,0
+191,pumpkin pie spice,filler,0,spice,0
+192,chili powder,filler,0,spice,0
+193,paprika,filler,0,spice,0
+194,smoked paprika,filler,0,spice,0
+195,carrot,filler,0,veg,0
+196,lettuce,filler,0,veg,0
+197,tomatoe,filler,0,veg,0
+198,potatoe,filler,0,veg,0
+199,pes frozen,filler,0,veg,0
+200,peas can,filler,0,veg,0
+201,beans fresh,filler,0,veg,0
+202,beans frozen,filler,0,veg,0
+203,beans can,filler,0,veg,0
+204,refried beans,filler,0,veg,0
+205,applesauce,filler,0,veg,0
+206,baked beans,filler,0,veg,0
