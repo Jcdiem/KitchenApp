@@ -3,13 +3,53 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/utils.php"; /** @var $mysqli */
 $success = false;
 $DEBUG = true;
 
+/** @var $mysqli */
 //TODO: Sort API by task being completed
-if ($_POST['action'] == 'edit' && $_POST['id'] && $_POST['amount']) {
-    /** @var $mysqli */
-    if (!($stmnt = $mysqli->prepare("UPDATE kitchen.ingredients SET amount=? WHERE id=?"))) {
+if ($_POST['action'] == 'addOneIngredient' && $_POST['id']) {
+    if (!($stmnt = $mysqli->prepare("UPDATE kitchen.ingredients SET amount=amount+1 WHERE id=?"))) {
         echo "Prepare failed";//: (" . $mysqli->errno . ") " . $mysqli->error;
     }
-    if (!$stmnt->bind_param("di", $_POST['amount'], $_POST['id'])) echo "Binding parameters failed: (";// . $stmnt->errno . ") " . $stmnt->error;
+    if (!$stmnt->bind_param("i", $_POST['id'])) echo "Binding parameters failed: (";// . $stmnt->errno . ") " . $stmnt->error;
+    if (!$stmnt->execute()) echo "Execute failed: ("; // . $stmnt->errno . ") " . $stmnt->error;
+    else {
+        $data = array(
+            "message" => "Record Updated",
+            "status" => 0
+        );
+        echo json_encode($data);
+        return;
+    }
+    $data = array(
+        "message" => "Update failed",
+        "status" => 1
+    );
+    echo json_encode($data);
+}
+elseif ($_POST['action'] == 'removeOneIngredient' && $_POST['id']) {
+    if (!($stmnt = $mysqli->prepare("UPDATE kitchen.ingredients SET amount=amount-1 WHERE id=?"))) {
+        echo "Prepare failed";//: (" . $mysqli->errno . ") " . $mysqli->error;
+    }
+    if (!$stmnt->bind_param("i", $_POST['id'])) echo "Binding parameters failed: (";// . $stmnt->errno . ") " . $stmnt->error;
+    if (!$stmnt->execute()) echo "Execute failed: ("; // . $stmnt->errno . ") " . $stmnt->error;
+    else {
+        $data = array(
+            "message" => "Record Updated",
+            "status" => 0
+        );
+        echo json_encode($data);
+        return;
+    }
+    $data = array(
+        "message" => "Update failed",
+        "status" => 1
+    );
+    echo json_encode($data);
+}
+elseif ($_POST['action'] == 'editIngredient' && $_POST['id'] && $_POST['par'] && $_POST['amount']) {
+    if (!($stmnt = $mysqli->prepare("UPDATE kitchen.ingredients SET amount=?, par=? WHERE id=?"))) {
+        echo "Prepare failed";//: (" . $mysqli->errno . ") " . $mysqli->error;
+    }
+    if (!$stmnt->bind_param("ddi", $_POST['amount'], $_POST['par'], $_POST['id'])) echo "Binding parameters failed: (";// . $stmnt->errno . ") " . $stmnt->error;
     if (!$stmnt->execute()) echo "Execute failed: ("; // . $stmnt->errno . ") " . $stmnt->error;
     else {
         $data = array(
@@ -25,7 +65,7 @@ if ($_POST['action'] == 'edit' && $_POST['id'] && $_POST['amount']) {
     );
     echo json_encode($data);
 }
-if ($_POST['action'] == 'delete' && $_POST['id']) {
+elseif ($_POST['action'] == 'deleteIngredient' && $_POST['id']) {
     if (!($stmnt = $mysqli->prepare("DELETE FROM kitchen.ingredients WHERE id=?"))) {
         echo "Prepare failed";//: (" . $mysqli->errno . ") " . $mysqli->error;
     }
@@ -44,7 +84,6 @@ if ($_POST['action'] == 'delete' && $_POST['id']) {
         "status" => 1
     );
 }
-
 if(isset($_REQUEST['formType'])){
     if($DEBUG) print_r($_REQUEST);
 
@@ -85,7 +124,7 @@ if(isset($_REQUEST['formType'])){
             }
             break;
         case "addShoppingListItems":
-            if(!(isset($_REQUEST['shoppingList']))){
+            if(!(isset($_REQUEST['shoppingList'])) || !(isset($_REQUEST['checkedId']))){
                 echo "<br> All required fields not used!";
                 break;
             }
@@ -101,7 +140,14 @@ if(isset($_REQUEST['formType'])){
                         else $success = true;
                     }
                 }
-                //TODO: Implement handling specified items
+                else{
+                    foreach ($_REQUEST['checkedId'] as $ingredId){
+                        debug_to_console("Adding item " . $ingredId);
+                        if (!($stmnt = $mysqli->prepare('INSERT INTO kitchen.ShoppingItems (shoppingListId, itemId) SELECT list.id, item.id FROM kitchen.ingredients AS item CROSS JOIN kitchen.shoppingLists AS list WHERE item.id = ? AND list.id = ?'))) echo "Prepare failed";//: (" . $mysqli->errno . ") " . $mysqli->error;
+                        if (!$stmnt->bind_param("ii", $ingredId, $_REQUEST['shoppingList'])) echo "Binding parameters failed";//: (" . $stmnt->errno . ") " . $stmnt->error;
+                        if (!$stmnt->execute()) echo "Execute failed";//: (" . $stmnt->errno . ") " . $stmnt->error;
+                    }
+                }
             }
             break;
     }
@@ -124,7 +170,12 @@ if($success){ ?>
         </button>
     </a>
     </body>
-<?php }
+<?php
+    ob_start();
+    header('Location: https://kitchenapp.diemconsulting.net/kitchen.php');
+    ob_end_flush();
+    die();
+}
 else { ?>
     <html lang="en">
     <head>

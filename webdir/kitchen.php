@@ -1,11 +1,11 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/utils.php"; /** @var $mysqli */
 
-//Create ingredient list
+//Create the 'edit ingredient list'
 $result = simpleMySQL('SELECT * FROM kitchen.ingredients',$mysqli);
-$ingredientsTableHTML = '<thead class="thead-light"><tr><th scope="col">ID</th><th scope="col">Name</th><th scope="col">Unit</th><th scope="col">Amount</th><th scope="col">Par</th><th scope="col">Category</th><th scope="col">Edit</th></tr></thead><tbody id="ingredientsTableBody">';
+$ingredientsTableHTML = '<thead class="thead-light"><tr><th scope="col">ID</th><th scope="col">Name</th><th scope="col">Unit</th><th scope="col">Amount</th><th scope="col">Par</th><th scope="col">Category</th><th scope="col">Add/Remove</th></tr></thead><tbody id="ingredientsTableBody">';
 while($row = $result->fetch_assoc()){
-    $ingredientsTableHTML .= '<tr><td>' . $row['id'] . '</td><td>' . $row['name'] . '</td><td>' . $row['unit'] . '</td><td>' . $row['amount'] . '</td><td>' . $row['par'] . '</td><td>' . $row['category'] . '</td></tr>';
+    $ingredientsTableHTML .= '<tr id="' . $row['id'] . 'row"><td>' . $row['id'] . '</td><td>' . $row['name'] . '</td><td>' . $row['unit'] . '</td><td>' . $row['amount'] . '</td><td>' . $row['par'] . '</td><td>' . $row['category'] . '</td><td><button class="btn-info" onclick="addOneItem(' . $row['id'] . ');">Plus</button>/<button class="btn-danger" onclick="removeOneItem(' . $row['id'] . ');">Minus</button></td></tr>';
 }
 $ingredientsTableHTML .= '</tbody>';
 
@@ -16,7 +16,7 @@ $ingredientsTableHTML .= '</tbody>';
 $result = simpleMySQL('SELECT * FROM kitchen.ingredients WHERE par > amount',$mysqli);
 $shoppingListUnderParTableHTML = '<thead class="thead-light"><tr><th scope="col">Name</th><th scope="col">Unit</th><th scope="col">Amount</th><th scope="col">Par</th><th scope="col">Category</th><th scope="col">Add</th></tr></thead><tbody id="shoppingListAutoAddTableBody">';
 while($row = $result->fetch_assoc()){
-    $shoppingListUnderParTableHTML .= '<tr><td>' . $row['name'] . '</td><td>' . $row['unit'] . '</td><td>' . $row['amount'] . '</td><td>' . $row['par'] . '</td><td>' . $row['category'] . '</td></tr>';
+    $shoppingListUnderParTableHTML .= '<tr><td>' . $row['name'] . '</td><td>' . $row['unit'] . '</td><td>' . $row['amount'] . '</td><td>' . $row['par'] . '</td><td>' . $row['category'] . '</td><td><input type="checkbox" name="checkedId[]" value="' . $row['id'] . '"></td></tr>';
 }
 $shoppingListUnderParTableHTML .= '</tbody>';
 
@@ -236,11 +236,52 @@ $shoppingListTableHTML .= '</tbody>';
 <script>
     function shoppingListAddHandler(){
         //TODO: Implement the javascript handler for taking items and adding them
-    }
+    };
 
-
+    function addOneItem(ingredId){
+        console.debug("Added one to " + ingredId);
+        $.ajax({
+            type: 'POST',
+            url : "kitchenapp.php",
+            dataType: "json",
+            data: {id:ingredId, action:'addOneIngredient'},
+            success: function (response) {
+                console.debug(response)
+                if(response.status != 0) {
+                    console.error("Adding one failed!");
+                }
+                else if (response.status == 0){
+                    // console.debug();
+                    let data = $('#'+ingredId+'row').find("td:eq(3)");
+                    data.html(parseFloat(data.html()) + 1);
+                }
+            }
+        });
+    };
+    function removeOneItem(ingredId){
+        console.debug("Removed one with id " + ingredId);
+        $.ajax({
+            type: 'POST',
+            url : "kitchenapp.php",
+            dataType: "json",
+            data: {id:ingredId, action:'removeOneIngredient'},
+            success: function (response) {
+                console.debug(response)
+                if(response.status != 0) {
+                    console.error("Removing one failed!");
+                }
+                else if (response.status == 0){
+                    // console.debug();
+                    let data = $('#'+ingredId+'row').find("td:eq(3)");
+                    data.html(parseFloat(data.html()) - 1);
+                }
+            }
+        });
+    };
 
     $(document).ready(function() {
+
+        console.debug("Document Ready!");
 
         //Ingredient Search
         $("#ingredientListSearchInput").on("keyup", function() {
@@ -251,19 +292,21 @@ $shoppingListTableHTML .= '</tbody>';
         });
 
         $('#ingredientsTable').SetEditable({
-            columnsEd: "3",
+            columnsEd: "3,4",
             onEdit: function(columnsEd){
                 const amnt = columnsEd[0].childNodes[3].innerHTML;
+                const parAmnt = columnsEd[0].childNodes[4].innerHTML;
                 const ingredId = columnsEd[0].childNodes[0].innerHTML;
                 // console.debug("ajax called: " + amnt + " and " + ingredId);
                 $.ajax({
                         type: 'POST',
                         url : "kitchenapp.php",
                         dataType: "json",
-                        data: {id:ingredId, amount:amnt, action:'edit'},
+                        data: {id:ingredId, amount:amnt, par:parAmnt, action:'editIngredient'},
                         success: function (response) {
                             console.debug(response)
-                            if(response.status) {
+                            if(response.status != 0) {
+                                console.error("Edit operation failed!");
                             }
                         }
                 });
@@ -274,10 +317,11 @@ $shoppingListTableHTML .= '</tbody>';
                     type: 'POST',
                     url : "kitchenapp.php",
                     dataType: "json",
-                    data: {id:ingredId, action:'delete'},
+                    data: {id:ingredId, action:'deleteIngredient'},
                     success: function (response) {
                         console.debug(response)
-                        if(response.status) {
+                        if(response.status != 0) {
+                            console.error("Operation failed!");
                         }
                     }
                 });
