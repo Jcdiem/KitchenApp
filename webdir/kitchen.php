@@ -29,7 +29,7 @@ $shoppingListTableHTML = '<thead class="thead-light"><tr><th scope="col">Name</t
 $shoppingListSelectDropdownHTML = '';
 while($row = $result->fetch_assoc()){
     //Add table item
-    $shoppingListTableHTML .= '<tr><td>' . $row['name'] . '</td><td>' . $row['dateCreated'] . '</td></tr>';
+    $shoppingListTableHTML .= '<tr><td>' . $row['name'] . '</td><td>' . $row['dateCreated'] . '</td><td>Qty</td><td><a href="shoppinglist.php?listId=' . $row['id'] . '">View List</a></td></tr>';
 
     //Add item to dropdown menu
     $shoppingListSelectDropdownHTML .= '<option value="'. $row['id'] .'">' . $row['name'] . '</option>';

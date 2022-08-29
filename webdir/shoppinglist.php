@@ -9,9 +9,9 @@ if (isset($_REQUEST['listId'])) {
     if (!$stmnt->bind_param("i", $_REQUEST['listId'])) echo "Binding parameters failed";//: (" . $stmnt->errno . ") " . $stmnt->error;
     if (!$stmnt->execute()) echo "Execute failed";//: (" . $stmnt->errno . ") " . $stmnt->error;
     if (!$result = $stmnt->get_result()) echo "Gathering result failed"; //: (" . $stmnt->errno . ") " . $stmnt->error;
-    $ingredientsTableHTML = '<thead class="thead-light"><tr><th scope="col">ID</th><th scope="col">Name</th><th scope="col">Amount</th><th scope="col">Unit</th></tr></thead><tbody id="ingredientsTableBody">';
+    $ingredientsTableHTML = '<thead class="thead-light"><tr><th scope="col">Name</th><th scope="col">Amount</th><th scope="col">Unit</th></tr></thead><tbody id="ingredientsTableBody">';
     while($row = $result->fetch_assoc()){
-        $ingredientsTableHTML .= '<tr><td>' . $row['id'] . '</td><td>' . $row['name'] . '</td><td>' . $row['unit'] . '</td><td>' . $row['amount'] . '</td></tr>';
+        $ingredientsTableHTML .= '<tr><td>' . $row['name'] . '</td><td>' . $row['unit'] . '</td><td>' . $row['amount'] . '</td></tr>';
     }
     $ingredientsTableHTML .= '</tbody>';
 }
@@ -24,7 +24,16 @@ else{
 <head>
     <meta charset="UTF-8">
     <title>Kitchen - Lists</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
+    <script src="js/bootstable.min.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
+
+
 <body>
 <div id="phpContainer"><?=$pageHtml?></div>
 <div id="returnContainer">
