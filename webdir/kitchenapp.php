@@ -146,6 +146,7 @@ if(isset($_REQUEST['formType'])){
                         if (!($stmnt = $mysqli->prepare('INSERT INTO kitchen.ShoppingItems (shoppingListId, itemId) SELECT list.id, item.id FROM kitchen.ingredients AS item CROSS JOIN kitchen.shoppingLists AS list WHERE item.id = ? AND list.id = ?'))) echo "Prepare failed";//: (" . $mysqli->errno . ") " . $mysqli->error;
                         if (!$stmnt->bind_param("ii", $ingredId, $_REQUEST['shoppingList'])) echo "Binding parameters failed";//: (" . $stmnt->errno . ") " . $stmnt->error;
                         if (!$stmnt->execute()) echo "Execute failed";//: (" . $stmnt->errno . ") " . $stmnt->error;
+                        else $success = true;
                     }
                 }
             }

@@ -9,9 +9,9 @@ if (isset($_REQUEST['listId'])) {
     if (!$stmnt->bind_param("i", $_REQUEST['listId'])) echo "Binding parameters failed";//: (" . $stmnt->errno . ") " . $stmnt->error;
     if (!$stmnt->execute()) echo "Execute failed";//: (" . $stmnt->errno . ") " . $stmnt->error;
     if (!$result = $stmnt->get_result()) echo "Gathering result failed"; //: (" . $stmnt->errno . ") " . $stmnt->error;
-    $ingredientsTableHTML = '<thead class="thead-light"><tr><th scope="col">Name</th><th scope="col">Amount</th><th scope="col">Unit</th></tr></thead><tbody id="ingredientsTableBody">';
+    $ingredientsTableHTML = '<thead class="thead-light"><tr><th scope="col">Name</th><th scope="col">Current Stock</th><th scope="col">Unit</th></tr></thead><tbody id="ingredientsTableBody">';
     while($row = $result->fetch_assoc()){
-        $ingredientsTableHTML .= '<tr><td>' . $row['name'] . '</td><td>' . $row['unit'] . '</td><td>' . $row['amount'] . '</td></tr>';
+        $ingredientsTableHTML .= '<tr class="tableRow"><td>' . $row['name'] . '</td><td>' . $row['amount'] . '</td><td>' . $row['unit'] . '</td></tr>';
     }
     $ingredientsTableHTML .= '</tbody>';
 }
@@ -24,6 +24,10 @@ else{
 <head>
     <meta charset="UTF-8">
     <title>Kitchen - Lists</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
@@ -32,6 +36,18 @@ else{
     <script src="js/bootstable.min.js"></script>
     <link rel="stylesheet" href="/css/main.css">
 </head>
+<style>
+    .clickedBackground{
+        background-color: greenyellow;
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        $('.tableRow').click(function(){
+            $(this).toggleClass('clickedBackground');
+        });
+    });
+</script>
 
 
 <body>

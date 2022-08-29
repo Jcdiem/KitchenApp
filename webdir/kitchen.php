@@ -1,4 +1,5 @@
 <?php
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/utils.php"; /** @var $mysqli */
 
 //Create the 'edit ingredient list'
@@ -28,8 +29,14 @@ $shoppingListTableHTML = '<thead class="thead-light"><tr><th scope="col">Name</t
 //Set up the dropdown menu
 $shoppingListSelectDropdownHTML = '';
 while($row = $result->fetch_assoc()){
+    //Query for the count of items with this shopping list ID
+    if (!($stmnt = $mysqli->prepare('SELECT COUNT(*) FROM kitchen.ShoppingItems WHERE shoppingListId = ?;'))) echo "Prepare failed";//: (" . $mysqli->errno . ") " . $mysqli->error;
+    if (!$stmnt->bind_param("i",$row['id'])) echo "Binding parameters failed: (" . $stmnt->errno . ") " . $stmnt->error;
+    if (!$stmnt->execute()) echo "Execute failed";//: (" . $stmnt->errno . ") " . $stmnt->error;
+    if (!$quantityResult = $stmnt->get_result()) echo "Gathering result failed"; //: (" . $stmnt->errno . ") " . $stmnt->error;
+
     //Add table item
-    $shoppingListTableHTML .= '<tr><td>' . $row['name'] . '</td><td>' . $row['dateCreated'] . '</td><td>Qty</td><td><a href="shoppinglist.php?listId=' . $row['id'] . '">View List</a></td></tr>';
+    $shoppingListTableHTML .= '<tr><td>' . $row['name'] . '</td><td>' . $row['dateCreated'] . '</td><td>' . $quantityResult->fetch_column() . '</td><td><a href="shoppinglist.php?listId=' . $row['id'] . '">View List</a></td></tr>';
 
     //Add item to dropdown menu
     $shoppingListSelectDropdownHTML .= '<option value="'. $row['id'] .'">' . $row['name'] . '</option>';
