@@ -45,20 +45,22 @@ elseif ($_POST['action'] == 'removeOneIngredient' && $_POST['id']) {
     );
     echo json_encode($data);
 }
-elseif ($_POST['action'] == 'editIngredient' && $_POST['id'] && $_POST['par'] && $_POST['amount']) {
-    if (!($stmnt = $mysqli->prepare("UPDATE kitchen.ingredients SET amount=?, par=? WHERE id=?"))) {
+elseif ($_POST['action'] == 'editIngredient' && $_POST['id'] && $_POST['par'] && $_POST['amount'] && $_POST['category'] && $_POST['unit'] && $_POST['name']) {
+    if (!($stmnt = $mysqli->prepare("UPDATE ingredients SET amount=?, par=?, category=?, unit=?, name=? WHERE id=?"))) {
         echo "Prepare failed";//: (" . $mysqli->errno . ") " . $mysqli->error;
     }
-    if (!$stmnt->bind_param("ddi", $_POST['amount'], $_POST['par'], $_POST['id'])) echo "Binding parameters failed: (";// . $stmnt->errno . ") " . $stmnt->error;
+    if (!$stmnt->bind_param("ddsssi", $_POST['amount'], $_POST['par'], $_POST['category'], $_POST['unit'], $_POST['name'], $_POST['id'])) echo "Binding parameters failed: (";// . $stmnt->errno . ") " . $stmnt->error;
     if (!$stmnt->execute()) echo "Execute failed: ("; // . $stmnt->errno . ") " . $stmnt->error;
+    //Success
     else {
         $data = array(
-            "message" => "Record Updated",
-            "status" => 0
+                "message" => "Record Updated",
+                "status" => 0
         );
         echo json_encode($data);
         return;
     }
+    //Failure
     $data = array(
         "message" => "update failed",
         "status" => 1
@@ -66,6 +68,7 @@ elseif ($_POST['action'] == 'editIngredient' && $_POST['id'] && $_POST['par'] &&
     echo json_encode($data);
 }
 elseif ($_POST['action'] == 'deleteIngredient' && $_POST['id']) {
+    //TODO: ENSURE THAT ITEM IS REMOVED FROM LISTS (PREVENT ERROR OF BEING USED OTHER PLACES)
     if (!($stmnt = $mysqli->prepare("DELETE FROM kitchen.ingredients WHERE id=?"))) {
         echo "Prepare failed";//: (" . $mysqli->errno . ") " . $mysqli->error;
     }

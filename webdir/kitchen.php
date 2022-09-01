@@ -2,16 +2,33 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/utils.php"; /** @var $mysqli */
 
+//Start the 'all ingredient' javascript arrays
+$ingredientsCategoryAutoCompleteArray = '[';
+$ingredientsUnitAutoCompleteArray = '[';
+
+$result = simpleMySQL('SELECT DISTINCT unit FROM kitchen.ingredients',$mysqli);
+while($row = $result->fetch_assoc()){
+    $ingredientsUnitAutoCompleteArray .= '"' . $row['unit'] . '",';
+}
+$result = simpleMySQL('SELECT DISTINCT category FROM kitchen.ingredients',$mysqli);
+while($row = $result->fetch_assoc()){
+    $ingredientsCategoryAutoCompleteArray .= '"' . $row['category'] . '",';
+}
+// Take off the trailing comma from arrays
+// Cap off the arrays
+$ingredientsCategoryAutoCompleteArray = substr_replace($ingredientsCategoryAutoCompleteArray,"",-1) . ']';
+$ingredientsUnitAutoCompleteArray = substr_replace($ingredientsUnitAutoCompleteArray,"",-1) . ']';
+
+
 //Create the 'edit ingredient list'
 $result = simpleMySQL('SELECT * FROM kitchen.ingredients',$mysqli);
 $ingredientsTableHTML = '<thead class="thead-light"><tr><th scope="col">ID</th><th scope="col">Name</th><th scope="col">Unit</th><th scope="col">Amount</th><th scope="col">Par</th><th scope="col">Category</th><th scope="col">Add/Remove</th></tr></thead><tbody id="ingredientsTableBody">';
 while($row = $result->fetch_assoc()){
+    //Make the row for the table
     $ingredientsTableHTML .= '<tr id="' . $row['id'] . 'row"><td>' . $row['id'] . '</td><td>' . $row['name'] . '</td><td>' . $row['unit'] . '</td><td>' . $row['amount'] . '</td><td>' . $row['par'] . '</td><td>' . $row['category'] . '</td><td><button class="btn-info" onclick="addOneItem(' . $row['id'] . ');">Plus</button>/<button class="btn-danger" onclick="removeOneItem(' . $row['id'] . ');">Minus</button></td></tr>';
 }
+// Cap off the table
 $ingredientsTableHTML .= '</tbody>';
-
-//debug_to_console($ingredientsTableHTML);
-//echo('<script>const ingredientsTableHTML = \'' . $ingredientsTableHTML . ' \';</script>');
 
 // Create Shopping List under par table
 $result = simpleMySQL('SELECT * FROM kitchen.ingredients WHERE par > amount',$mysqli);
@@ -241,10 +258,108 @@ $shoppingListTableHTML .= '</tbody>';
 </div>
 </body>
 <script>
+    const ingredientCategoryArray = <?=$ingredientsCategoryAutoCompleteArray?>;
+    const ingredientUnitArray = <?=$ingredientsUnitAutoCompleteArray?>;
+
     function shoppingListAddHandler(){
         //TODO: Implement the javascript handler for taking items and adding them
     };
-
+    function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function(e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) { return false;}
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+                /*check if the item starts with the same letters as the text field value:*/
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    /*create a DIV element for each matching element:*/
+                    b = document.createElement("DIV");
+                    /*make the matching letters bold:*/
+                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(val.length);
+                    /*insert a input field that will hold the current array item's value:*/
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    /*execute a function when someone clicks on the item value (DIV element):*/
+                    b.addEventListener("click", function(e) {
+                        /*insert the value for the autocomplete text field:*/
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        /*close the list of autocompleted values,
+                        (or any other open lists of autocompleted values:*/
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function(e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                /*If the arrow DOWN key is pressed,
+                increase the currentFocus variable:*/
+                currentFocus++;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                /*If the arrow UP key is pressed,
+                decrease the currentFocus variable:*/
+                currentFocus--;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    /*and simulate a click on the "active" item:*/
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            /*a function to classify an item as "active":*/
+            if (!x) return false;
+            /*start by removing the "active" class on all items:*/
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            /*add class "autocomplete-active":*/
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            /*a function to remove the "active" class from all autocomplete items:*/
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            /*close all autocomplete lists in the document,
+            except the one passed as an argument:*/
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
     function addOneItem(ingredId){
         console.debug("Added one to " + ingredId);
         $.ajax({
@@ -299,17 +414,20 @@ $shoppingListTableHTML .= '</tbody>';
         });
 
         $('#ingredientsTable').SetEditable({
-            columnsEd: "3,4",
+            columnsEd: "1,2,3,4,5",
             onEdit: function(columnsEd){
+                const name = columnsEd[0].childNodes[1].innerHTML;
+                const unit = columnsEd[0].childNodes[2].innerHTML;
                 const amnt = columnsEd[0].childNodes[3].innerHTML;
                 const parAmnt = columnsEd[0].childNodes[4].innerHTML;
+                const category = columnsEd[0].childNodes[5].innerHTML;
                 const ingredId = columnsEd[0].childNodes[0].innerHTML;
                 // console.debug("ajax called: " + amnt + " and " + ingredId);
                 $.ajax({
                         type: 'POST',
                         url : "kitchenapp.php",
                         dataType: "json",
-                        data: {id:ingredId, amount:amnt, par:parAmnt, action:'editIngredient'},
+                        data: {id:ingredId, amount:amnt, par:parAmnt, category:category, unit:unit, name:name, action:'editIngredient'},
                         success: function (response) {
                             console.debug(response)
                             if(response.status != 0) {

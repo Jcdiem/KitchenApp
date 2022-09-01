@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="0ff1ac0e-ce20-4345-a076-d00480269832" name="diemconsulting" url="https://kitchenapp.diemconsulting.net/">
+        <fileTransfer rootFolder="/var/www/kitchenapp.diemconsulting.net/webdir" accessType="SFTP" host="diemconsulting.net" port="42069" sshConfigId="6ed04895-d82f-466c-80f2-e4ce555734bc" sshConfig="DiemConsulting" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
