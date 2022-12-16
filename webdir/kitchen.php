@@ -39,7 +39,6 @@ while($row = $result->fetch_assoc()){
 $shoppingListUnderParTableHTML .= '</tbody>';
 
 // Create Shopping List table & dropdown
-//TODO: Have table show how many items in each list
 $result = simpleMySQL('SELECT * FROM kitchen.shoppingLists WHERE kitchen.shoppingLists.completed = false',$mysqli);
 //Set up the table
 $shoppingListTableHTML = '<thead class="thead-light"><tr><th scope="col">Name</th><th scope="col">Created</th><th scope="col">Items</th><th scope="col">Complete</th></tr></thead><tbody id="shoppingListAutoAddTableBody">';
@@ -62,6 +61,20 @@ while($row = $result->fetch_assoc()){
 $shoppingListTableHTML .= '</tbody>';
 
 
+//Create recipe list table & dropdown
+$result = simpleMySQL('SELECT * FROM kitchen.Recipes;',$mysqli);
+
+//Table
+$recipeListTableHTML = '<thead class="thead-light"><tr><th scope="col">Title</th><th scope="col">Open</th></tr></thead><tbody>';
+
+// Add each recipe and a button to open it
+while($row = $result->fetch_assoc()){
+    $recipeListTableHTML .= '<tr><td>'. $row['title'] .'</td><td><a href="recipeapp.php?recipeId='.$row['id'].'">View Recipe</a></td></tr>';
+}
+
+//Finish table body
+$recipeListTableHTML .= '</tbody>';
+
 ?>
 
 <html lang="en">
@@ -69,15 +82,15 @@ $shoppingListTableHTML .= '</tbody>';
     <!--  Template for the dashboard courtesy of https://www.blog.duomly.com/bootstrap-tutorial/  -->
     <meta charset="UTF-8">
     <title>Simple Kitchen App</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-            integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
+    <script src="https://code.jquery.com/jquery-3.6.2.min.js"
             crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>-->
     <script src="js/bootstable.min.js"></script>
     <link rel="stylesheet" href="/css/main.css">
     <style>
@@ -96,9 +109,6 @@ $shoppingListTableHTML .= '</tbody>';
         }
         .form-group{
             padding-left: 1rem;
-        }
-        .btn-sm {
-            font-size: 1.5rem;
         }
         .sidebar {
             position: fixed;
@@ -146,6 +156,7 @@ $shoppingListTableHTML .= '</tbody>';
     </style>
 </head>
 <body>
+<!--TODO: Create a way to save what tab was last used-->
 <nav class="navbar navbar-dark fixed-top bg-primary flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Simple Kitchen Application</a>
     <ul class="navbar-nav px-3">
@@ -175,6 +186,12 @@ $shoppingListTableHTML .= '</tbody>';
                         <a class="nav-link tablinks" href="#shoppingList">
                             <svg class="bi bi-chevron-right" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clip-rule="evenodd"/></svg>
                             Shopping Lists
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link tablinks" href="#recipeList">
+                            <svg class="bi bi-chevron-right" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clip-rule="evenodd"/></svg>
+                            Recipes
                         </a>
                     </li>
                 </ul>
@@ -220,7 +237,6 @@ $shoppingListTableHTML .= '</tbody>';
                 <h2>Shopping List Management</h2>
                 <div class="categoryOutline">
                     <h3>Shopping Lists</h3>
-<!--                        //TODO: Add a way to view shopping list contents-->
                     <table id="shoppingListTable" class="table shoppingListTable"><?=$shoppingListTableHTML?></table>
                 </div>
                 <div class="categoryOutline">
@@ -253,6 +269,10 @@ $shoppingListTableHTML .= '</tbody>';
                     </form>
                 </div>
             </div>
+            <div id="recipeList" class="tab">
+                <h1>THIS IS THE RECIPE LIST</h1>
+                <table id="recipeListAutoAddTable" class="table"><?=$recipeListTableHTML?></table>
+            </div>
         </main>
     </div>
 </div>
@@ -261,9 +281,6 @@ $shoppingListTableHTML .= '</tbody>';
     const ingredientCategoryArray = <?=$ingredientsCategoryAutoCompleteArray?>;
     const ingredientUnitArray = <?=$ingredientsUnitAutoCompleteArray?>;
 
-    function shoppingListAddHandler(){
-        //TODO: Implement the javascript handler for taking items and adding them
-    };
     function autocomplete(inp, arr) {
         /*the autocomplete function takes two arguments,
         the text field element and an array of possible autocompleted values:*/
@@ -312,13 +329,13 @@ $shoppingListTableHTML .= '</tbody>';
                 /*If the arrow DOWN key is pressed,
                 increase the currentFocus variable:*/
                 currentFocus++;
-                /*and and make the current item more visible:*/
+                /*and make the current item more visible:*/
                 addActive(x);
             } else if (e.keyCode == 38) { //up
                 /*If the arrow UP key is pressed,
                 decrease the currentFocus variable:*/
                 currentFocus--;
-                /*and and make the current item more visible:*/
+                /* and make the current item more visible:*/
                 addActive(x);
             } else if (e.keyCode == 13) {
                 /*If the ENTER key is pressed, prevent the form from being submitted,*/
