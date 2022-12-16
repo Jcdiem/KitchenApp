@@ -127,7 +127,8 @@ if(isset($_REQUEST['formType'])){
             }
             break;
         case "addShoppingListItems":
-            if(!(isset($_REQUEST['shoppingList'])) || !(isset($_REQUEST['checkedId']))){
+            //IF shopping list not set OR not set [allSubpar OR checkedId]
+            if(!(isset($_REQUEST['shoppingList'])) || !(isset($_REQUEST['allSubpar']) || isset($_REQUEST['checkedId'])) ){
                 echo "<br> All required fields not used!";
                 break;
             }
